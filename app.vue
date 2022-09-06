@@ -44,6 +44,12 @@ const optionsArray = [
 ];
 
 const selectedNames = ref<string[]>([]);
+
+const removeName = (index: number) => {
+  const filteredNames = [...selectedNames.value];
+  filteredNames.splice(index, 1);
+  selectedNames.value = filteredNames;
+};
 </script>
 
 <template>
@@ -59,10 +65,14 @@ const selectedNames = ref<string[]>([]);
       />
       <button class="primary" @click="computeSelectedNames">Find Names</button>
       <div class="card-container">
-        <div v-for="(name, i) in selectedNames" :key="i" class="card">
-          <h4>{{ name }}</h4>
-          <p>x</p>
-        </div>
+        <CardName
+          v-for="(name, i) in selectedNames"
+          :key="name"
+          class="card"
+          :name="name"
+          @remove="() => removeName(i)"
+          :index="i"
+        />
       </div>
     </div>
   </div>
@@ -91,35 +101,6 @@ h1 {
   position: relative;
 }
 
-.option-container {
-  margin-bottom: 2rem;
-}
-
-.option {
-  background: white;
-  outline: 0.15rem solid rgb(249, 87, 89);
-  border: none;
-  padding: 0.7rem;
-  width: 12rem;
-  font-size: 1rem;
-  color: rgb(27, 60, 138);
-  cursor: pointer;
-  font-weight: 200;
-}
-
-.option-left {
-  border-radius: 1rem 0 0 1rem;
-}
-
-.option-right {
-  border-radius: 0rem 1rem 1rem 0rem;
-}
-
-.option-active {
-  background-color: rgb(249, 87, 89);
-  color: white;
-}
-
 .primary {
   background-color: rgb(249, 87, 89);
   color: white;
@@ -135,24 +116,5 @@ h1 {
   display: flex;
   margin-top: 3rem;
   flex-wrap: wrap;
-}
-
-.card {
-  background-color: rgb(27, 60, 138);
-  width: 28%;
-  color: white;
-  border-radius: 1rem;
-  padding: 0.5rem;
-  margin-right: 0.5rem;
-  margin-bottom: 1rem;
-  position: relative;
-}
-
-.card p {
-  position: absolute;
-  top: -50%;
-  left: 92.5%;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.5);
 }
 </style>
